@@ -1,0 +1,61 @@
+# Program Address
+37oMYvqhv2jsMbQw8ZPKKfxmRvFwvRyi6joH5ueP8mAr
+
+# Keys
+- Deploy wallet
+9nnqFZTSuwaLnxLP7Y87ASmMXVbW7BXLtqzstEjcAMLU
+- Admin Wallet
+CtA7ERfUDxYtJPFiDwQoNFRZ2UgFLrp9mNwEUrYQ2Zhp
+- Updater Wallet
+3c8N6t9Wup7o3hSJvjAFKaoaWYNJgDZKak7NVASWKFQL
+- User Wallet [Default]
+4fRhXhuLv7MeGC9nJgnMiYx6XYgDxtgsifZovv3yz79K
+
+# Redeploy
+solana program deploy ./target/deploy/shipment_sc.so  --keypair ./keys/deploy.json
+
+# Initialize
+yarn script status -e devnet
+yarn script init -t 6tAUGZ5BfvcmqRMENpFb53Jhhu2hxATPQLzyhjdBZ9wU -e devnet -k ./keys/deploy.json
+yarn script init_user -a 9nnqFZTSuwaLnxLP7Y87ASmMXVbW7BXLtqzstEjcAMLU -e devnet -k ./keys/deploy.json
+yarn script transfer_authority -a 9nnqFZTSuwaLnxLP7Y87ASmMXVbW7BXLtqzstEjcAMLU -e devnet -k ./keys/deploy.json
+
+# Assign Roles as Super Admin
+yarn script init_user -a CtA7ERfUDxYtJPFiDwQoNFRZ2UgFLrp9mNwEUrYQ2Zhp -e devnet -k ./keys/deploy.json
+yarn script set_role -a CtA7ERfUDxYtJPFiDwQoNFRZ2UgFLrp9mNwEUrYQ2Zhp -m 1 -e devnet -k ./keys/deploy.json
+yarn script init_user -a 3c8N6t9Wup7o3hSJvjAFKaoaWYNJgDZKak7NVASWKFQL -e devnet -k ./keys/deploy.json
+yarn script set_role -a 3c8N6t9Wup7o3hSJvjAFKaoaWYNJgDZKak7NVASWKFQL -u 1 -e devnet -k ./keys/deploy.json
+yarn script init_user -a 4fRhXhuLv7MeGC9nJgnMiYx6XYgDxtgsifZovv3yz79K -e devnet -k ./keys/deploy.json
+yarn script set_role -a 4fRhXhuLv7MeGC9nJgnMiYx6XYgDxtgsifZovv3yz79K -m 0 -u 0 -e devnet -k ./keys/deploy.json
+yarn script get_roles -e devnet -k ./keys/user.json
+
+# Admin
+yarn script set_treasury -a 6tAUGZ5BfvcmqRMENpFb53Jhhu2hxATPQLzyhjdBZ9wU -e devnet -k ./keys/admin.json
+
+yarn script revoke_collection -a 2p5tvQgFgg2s8hFRndk7Kk28cajT2fe7iWwxkTi3VCpw -e devnet -k ./keys/admin.json
+
+yarn script register_collection -a 2p5tvQgFgg2s8hFRndk7Kk28cajT2fe7iWwxkTi3VCpw -e devnet -k ./keys/admin.json
+
+yarn script collection_status -a 2p5tvQgFgg2s8hFRndk7Kk28cajT2fe7iWwxkTi3VCpw -e devnet -k ./keys/user.json
+
+# User
+yarn script create_deposit -m 4AVW2qqSXqYg3LHx4hwi1qXoGZnV67vt6ArQjDTPGpUD -u default-user -e devnet -k ./keys/user.json
+yarn script create_deposit -m HH8LjuKfX5prNjKy2jijrnWSii9rzffsfQXqTmwEXYbC -u default-user -e devnet -k ./keys/user.json
+yarn script get_deposits -m 4AVW2qqSXqYg3LHx4hwi1qXoGZnV67vt6ArQjDTPGpUD -e devnet -k ./keys/user.json
+yarn script get_deposits -a 4fRhXhuLv7MeGC9nJgnMiYx6XYgDxtgsifZovv3yz79K -e devnet -k ./keys/user.json
+
+# Updater
+yarn script update_deposit -a 29rCB7S9xyvkPcGBhF7qYZEA7rKgiRSeHMPRKU8tgMrg -l 1 -e devnet -k ./keys/updater.json
+yarn script get_deposits -l 0 -e devnet -k ./keys/user.json
+yarn script update_deposit -a 3B4cLyTJDMkeGUpNoZAyB5Ks3C21Y3pdPGq1XgpbKgGN -s 2 -e devnet -k ./keys/updater.json
+yarn script get_deposits -s 1 -e devnet -k ./keys/user.json
+
+# User
+yarn script withdraw_to_owner -a 29rCB7S9xyvkPcGBhF7qYZEA7rKgiRSeHMPRKU8tgMrg -e devnet -k ./keys/user.json
+
+# Admin
+yarn script withdraw_to_treasury -a 3B4cLyTJDMkeGUpNoZAyB5Ks3C21Y3pdPGq1XgpbKgGN -e devnet -k ./keys/admin.json
+
+# Updater
+yarn script finalize_deposit -a 29rCB7S9xyvkPcGBhF7qYZEA7rKgiRSeHMPRKU8tgMrg -e devnet -k ./keys/updater.json
+yarn script get_deposits -e devnet -k ./keys/user.json
